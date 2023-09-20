@@ -10,7 +10,10 @@
         "laravelcollective/html": "~5.3",
         "santigarcor/laratrust": "3.0.*",
         "yajra/laravel-datatables-oracle": "~6.0",
-        "anhskohbo/no-captcha": "~2.0"
+        "anhskohbo/no-captcha": "~2.0",
+        "guzzlehttp/guzzle": "^6.5",
+        "maatwebsite/excel": "~2.1",
+        "barryvdh/laravel-dompdf": "~0.7"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

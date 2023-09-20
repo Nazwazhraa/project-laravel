@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -26,15 +27,17 @@
         ]); ?>
     </script>
 </head>
+
 <body>
-    
+
     <div id="app">
         <nav class="navbar navbar-default navbar-static-top">
             <div class="container">
                 <div class="navbar-header">
 
                     <!-- Collapsed Hamburger -->
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#app-navbar-collapse">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                        data-target="#app-navbar-collapse">
                         <span class="sr-only">Toggle Navigation</span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
@@ -50,61 +53,72 @@
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
                     <!-- Left Side Of Navbar -->
                     <ul class="nav navbar-nav">
-                    @if (Auth::check())
-               <li><a href="{{ url('/home') }}">Dashboard</a></li>
-               @endif
-               @role('admin')
-               <li><a href="{{ route('authors.index') }}">Penulis</a></li>
-               <li><a href="{{ route('books.index') }}">Buku</a></li>
-               @endrole
-                    </ul>
-
-                    <!-- Right Side Of Navbar -->
-                    <ul class="nav navbar-nav navbar-right">
-                        <!-- Authentication Links -->
-                        @if (Auth::guest())
-                            <li><a href="{{ url('/login') }}">Login</a></li>
-                            <li><a href="{{ url('/register') }}">Register</a></li>
-                            @else
-                            <li class="dropdown">
-
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                    {{ Auth::user()->name }} <span class="caret"></span>
-                                </a>
-
-                                <ul class="dropdown-menu" role="menu">
-                                    <li>
-                                        <a href="{{ url('/logout') }}"
-                                            onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                            Keluar
-                                        </a>
-
-                                        <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="">
-                                            {{ csrf_field() }}
-                                        </form>
-                                    </li>
-                                </ul>
-                            </li>
+                        @if (Auth::check())
+                            {!! Html::smartNav(url('/home'), 'Dashboard') !!}
                         @endif
-                    </ul>
-                </div>
-            </div>
-        </nav>
-        @include('layouts._flash')
-        @yield('content')
-    </div>
+                        @role('admin')
+                            {!! Html::smartNav(route('authors.index'), 'Penulis') !!}
+                            {!! Html::smartNav(route('books.index'), 'Buku') !!}
+                            {!! Html::smartNav(route('members.index'), 'Member') !!}
+                            {!! Html::smartNav(route('statistics.index'), 'Peminjaman') !!}
+                        @endrole
+                            @if (auth()->check())
+                                {!! Html::smartNav(url('/settings/profile'), 'Profil') !!}
+                            @endif
+                        </ul>
 
-    <!-- Scripts -->
-    <!-- <script src="/js/app.js"></script> -->
-    <script src="https://code.jquery.com/jquery-3.1.0.js" integrity="sha256-slogkvB1K3VOkzAI8QITxV3VzpOnkeNVsKvtkYLMjfk=" crossorigin="anonymous"></script>
-    <!-- <script src="/js/bootstrap.min.js"></script>
-    <script src="/js/jquery-3.1.0.min.js"></script> -->
-    <script src="/js/bootstrap.min.js"></script>
-    <script src="/js/jquery.dataTables.min.js"></script>
-    <script src="/js/dataTables.bootstrap.min.js"></script>
-    <script src="/js/selectize.min.js"></script>
-    <script src="/js/custom.js"></script>
-@yield('scripts')
-</body>
-</html>
+                        <!-- Right Side Of Navbar -->
+                        <ul class="nav navbar-nav navbar-right">
+                            <!-- Authentication Links -->
+                            @if (Auth::guest())
+                                <li><a href="{{ url('/login') }}">Login</a></li>
+                                <li><a href="{{ url('/register') }}">Register</a></li>
+                            @else
+                                <li class="dropdown">
+
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                                        aria-expanded="false">
+                                        {{ Auth::user()->name }} <span class="caret"></span>
+                                    </a>
+
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li><a href="{{ url('/settings/password') }}"><i class="fa fa-btn fa-lock"></i>
+                                                Ubah Password</a></li>
+                                        <li>
+                                            <a href="{{ url('/logout') }}"
+                                                onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                                Keluar
+                                            </a>
+
+                                            <form id="logout-form" action="{{ url('/logout') }}" method="POST"
+                                                style="">
+                                                {{ csrf_field() }}
+                                            </form>
+                                        </li>
+                                    </ul>
+                                </li>
+                            @endif
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+            @include('layouts._flash')
+            @yield('content')
+        </div>
+
+        <!-- Scripts -->
+        <!-- <script src="/js/app.js"></script> -->
+        <script src="https://code.jquery.com/jquery-3.1.0.js" integrity="sha256-slogkvB1K3VOkzAI8QITxV3VzpOnkeNVsKvtkYLMjfk="
+            crossorigin="anonymous"></script>
+        <!-- <script src="/js/bootstrap.min.js"></script>
+            <script src="/js/jquery-3.1.0.min.js"></script> -->
+        <script src="/js/bootstrap.min.js"></script>
+        <script src="/js/jquery.dataTables.min.js"></script>
+        <script src="/js/dataTables.bootstrap.min.js"></script>
+        <script src="/js/selectize.min.js"></script>
+        <script src="/js/custom.js"></script>
+        @yield('scripts')
+    </body>
+
+    </html>

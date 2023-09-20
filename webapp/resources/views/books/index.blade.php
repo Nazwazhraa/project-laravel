@@ -23,9 +23,8 @@
 
                     <div class="panel-body">
                         <p>
-                            <a href="{{ route('books.create') }}" class="btn btn-primary">
-                                Tambah
-                            </a>
+                            <a class="btn btn-primary" href="{{ url('/admin/books/create') }}">Tambah</a>
+                            <a class="btn btn-primary" href="{{ url('/admin/export/books') }}">Export</a>
                         </p>
                         {!! $html->table() !!}
                     </div>
