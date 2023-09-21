@@ -2,15 +2,14 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\User;
-use Validator;
 use App\Http\Controllers\Controller;
-use Illuminate\Foundation\Auth\RegistersUsers;
 use App\Role;
-use Illuminate\Support\Facades\Auth;
+use App\User;
+use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
-
+use Validator;
 
 class RegisterController extends Controller
 {
@@ -23,7 +22,7 @@ class RegisterController extends Controller
     | validation and creation. By default this controller uses a trait to
     | provide this functionality without requiring any additional code.
     |
-    */
+     */
 
     use RegistersUsers;
 
@@ -45,19 +44,19 @@ class RegisterController extends Controller
         $this->middleware('user-should-verified');
     }
 
-    public function verify(Request $request, $token) 
+    public function verify(Request $request, $token)
     {
         $email = $request->get('email');
-$user = User::where('verification_token', $token)->where('email', $email)->first();
-if ($user) {
-$user->verify();
-Session::flash("flash_notification", [
-"level" => "success",
-"message" => "Berhasil melakukan verifikasi."
-]);
-Auth::login($user);
-}
-return redirect('/');
+        $user = User::where('verification_token', $token)->where('email', $email)->first();
+        if ($user) {
+            $user->verify();
+            Session::flash("flash_notification", [
+                "level" => "success",
+                "message" => "Berhasil melakukan verifikasi.",
+            ]);
+            Auth::login($user);
+        }
+        return redirect('/');
     }
 
     /**
@@ -72,7 +71,7 @@ return redirect('/');
             'name' => 'required|max:255',
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|min:6|confirmed',
-            // 'g-recaptcha-response' => 'required|captcha',
+            'g-recaptcha-response' => ['required', 'captcha'],
         ]);
     }
 
@@ -97,15 +96,14 @@ return redirect('/');
     public function sendVerification(Request $request)
     {
         $user = User::where('email', $request->get('email'))->first();
-          if ($user && !$user->is_verified) {
-        $user->sendVerification();
-        Session::flash("flash_notification", [
-        "level"=>"success",
-        "message"=>"Silahkan klik pada link aktivasi yang telah kami kirim."
-        ]);
-}
-return redirect('/login');
-}
-
+        if ($user && !$user->is_verified) {
+            $user->sendVerification();
+            Session::flash("flash_notification", [
+                "level" => "success",
+                "message" => "Silahkan klik pada link aktivasi yang telah kami kirim.",
+            ]);
+        }
+        return redirect('/login');
+    }
 
 }
