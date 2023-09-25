@@ -62,63 +62,63 @@
                             {!! Html::smartNav(route('members.index'), 'Member') !!}
                             {!! Html::smartNav(route('statistics.index'), 'Peminjaman') !!}
                         @endrole
-                            @if (auth()->check())
-                                {!! Html::smartNav(url('/settings/profile'), 'Profil') !!}
-                            @endif
-                        </ul>
+                        @if (auth()->check())
+                            {!! Html::smartNav(url('/settings/profile'), 'Profil') !!}
+                        @endif
+                    </ul>
 
-                        <!-- Right Side Of Navbar -->
-                        <ul class="nav navbar-nav navbar-right">
-                            <!-- Authentication Links -->
-                            @if (Auth::guest())
-                                <li><a href="{{ url('/login') }}">Login</a></li>
-                                <li><a href="{{ url('/register') }}">Register</a></li>
-                            @else
-                                <li class="dropdown">
+                    <!-- Right Side Of Navbar -->
+                    <ul class="nav navbar-nav navbar-right">
+                        <!-- Authentication Links -->
+                        @if (Auth::guest())
+                            <li><a href="{{ url('/login') }}">Login</a></li>
+                            <li><a href="{{ url('/register') }}">Register</a></li>
+                        @else
+                            <li class="dropdown">
 
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
-                                        aria-expanded="false">
-                                        {{ Auth::user()->name }} <span class="caret"></span>
-                                    </a>
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                                    aria-expanded="false">
+                                    {{ Auth::user()->name }} <span class="caret"></span>
+                                </a>
 
-                                    <ul class="dropdown-menu" role="menu">
-                                        <li><a href="{{ url('/settings/password') }}"><i class="fa fa-btn fa-lock"></i>
-                                                Ubah Password</a></li>
-                                        <li>
-                                            <a href="{{ url('/logout') }}"
-                                                onclick="event.preventDefault();
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><a href="{{ url('/settings/password') }}"><i class="fa fa-btn fa-lock"></i>
+                                            Ubah Password</a></li>
+                                    <li>
+                                        <a href="{{ url('/logout') }}"
+                                            onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                                Keluar
-                                            </a>
+                                            Keluar
+                                        </a>
 
-                                            <form id="logout-form" action="{{ url('/logout') }}" method="POST"
-                                                style="">
-                                                {{ csrf_field() }}
-                                            </form>
-                                        </li>
-                                    </ul>
-                                </li>
-                            @endif
-                        </ul>
-                    </div>
+                                        <form id="logout-form" action="{{ url('/logout') }}" method="POST"
+                                            style="">
+                                            {{ csrf_field() }}
+                                        </form>
+                                    </li>
+                                </ul>
+                            </li>
+                        @endif
+                    </ul>
                 </div>
-            </nav>
-            @include('layouts._flash')
-            @yield('content')
-        </div>
+            </div>
+        </nav>
+        @include('layouts._flash')
+        @yield('content')
+    </div>
 
-        <!-- Scripts -->
-        <!-- <script src="/js/app.js"></script> -->
-        <script src="https://code.jquery.com/jquery-3.1.0.js" integrity="sha256-slogkvB1K3VOkzAI8QITxV3VzpOnkeNVsKvtkYLMjfk="
-            crossorigin="anonymous"></script>
-        <!-- <script src="/js/bootstrap.min.js"></script>
+    <!-- Scripts -->
+    <!-- <script src="/js/app.js"></script> -->
+    <script src="https://code.jquery.com/jquery-3.1.0.js" integrity="sha256-slogkvB1K3VOkzAI8QITxV3VzpOnkeNVsKvtkYLMjfk="
+        crossorigin="anonymous"></script>
+    <!-- <script src="/js/bootstrap.min.js"></script>
             <script src="/js/jquery-3.1.0.min.js"></script> -->
-        <script src="/js/bootstrap.min.js"></script>
-        <script src="/js/jquery.dataTables.min.js"></script>
-        <script src="/js/dataTables.bootstrap.min.js"></script>
-        <script src="/js/selectize.min.js"></script>
-        <script src="/js/custom.js"></script>
-        @yield('scripts')
-    </body>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/jquery.dataTables.min.js"></script>
+    <script src="/js/dataTables.bootstrap.min.js"></script>
+    <script src="/js/selectize.min.js"></script>
+    <script src="/js/custom.js"></script>
+    @yield('scripts')
+</body>
 
-    </html>
+</html>

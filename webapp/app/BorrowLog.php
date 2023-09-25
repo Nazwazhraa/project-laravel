@@ -9,7 +9,7 @@ class BorrowLog extends Model
     protected $fillable = ['book_id', 'user_id', 'is_returned'];
     public function book()
     {
-       return $this->belongsTo('App\Book');
+        return $this->belongsTo('App\Book');
     }
     public function user()
     {
@@ -17,14 +17,14 @@ class BorrowLog extends Model
     }
     protected $casts = [
         'is_returned' => 'boolean',
-        ];
+    ];
     public function scopeReturned($query)
     {
-return $query->where('is_returned', 1);
-}
-public function scopeBorrowed($query)
-{
-return $query->where('is_returned', 0);
-}
-        
+        return $query->where('is_returned', 1);
+    }
+    public function scopeBorrowed($query)
+    {
+        return $query->where('is_returned', 0);
+    }
+
 }

@@ -11,9 +11,9 @@ class Author extends Model
     {
         parent::boot();
         self::deleting(function ($author) {
-// mengecek apakah penulis masih punya buku
+           // mengecek apakah penulis masih punya buku
             if ($author->books->count() > 0) {
-// menyiapkan pesan error
+                // menyiapkan pesan error
                 $html = 'Penulis tidak bisa dihapus karena masih memiliki buku : ';
                 $html .= '<ul>';
                 foreach ($author->books as $book) {
@@ -24,7 +24,7 @@ class Author extends Model
                     "level" => "danger",
                     "message" => $html,
                 ]);
-// membatalkan proses penghapusan
+                // membatalkan proses penghapusan
                 return false;
             }
         });

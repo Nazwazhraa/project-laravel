@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Author;
 use Illuminate\Support\Facades\Auth;
 use Laratrust\LaratrustFacade as Laratrust;
-use Mail;
 
 class HomeController extends Controller
 {

@@ -8,6 +8,5 @@
 </p>
 <p>
     Jika Anda ingin mengubah password, silahkan kunjungi <a
-        href="{{ $reset = url('password/r\
-        eset') }}">{{ $reset }}</a> dan masukan email Anda.
+        href="{{ $reset = url('password/reset') }}">{{ $reset }}</a> dan masukan email Anda.
 </p>

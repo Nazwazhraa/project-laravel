@@ -2,18 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\StoreMemberRequest;
+use App\Http\Requests\UpdateMemberRequest;
 use App\Role;
 use App\User;
-use Yajra\Datatables\Html\Builder;
-use Yajra\Datatables\Facades\Datatables;
-use App\Http\Requests\StoreMemberRequest;
-use Illuminate\Support\Facades\Session;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
-use App\Http\Requests\UpdateMemberRequest;
-
-
-
+use Illuminate\Support\Facades\Session;
+use Yajra\Datatables\Facades\Datatables;
+use Yajra\Datatables\Html\Builder;
 
 class MembersController extends Controller
 {
@@ -23,28 +20,28 @@ class MembersController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request, Builder $htmlBuilder)
-{
-if ($request->ajax()) {
-$members = Role::where('name', 'member')->first()->users;
-return Datatables::of($members)
-->addColumn('name', function($member) {
-    return '<a href="'.route('members.show', $member->id).'">'.$member->name.'</a>';
-})
-->addColumn('action', function($member){
-return view('datatable._action', [
-'model' => $member,
-'form_url' => route('members.destroy', $member->id),
-'edit_url' => route('members.edit', $member->id),
-'confirm_message' => 'Yakin mau menghapus ' . $member->name . '?'
-]);
-})->make(true);
-}
-$html = $htmlBuilder
-->addColumn(['data' => 'name', 'name'=>'name', 'title'=>'Nama'])
-->addColumn(['data' => 'email', 'name'=>'email', 'title'=>'Email'])
-->addColumn(['data' => 'action', 'name'=>'action', 'title'=>'', 'orderable'=>false, 'searchable'=>false]);
-return view('members.index', compact('html'));
-}
+    {
+        if ($request->ajax()) {
+            $members = Role::where('name', 'member')->first()->users;
+            return Datatables::of($members)
+                ->addColumn('name', function ($member) {
+                    return '<a href="' . route('members.show', $member->id) . '">' . $member->name . '</a>';
+                })
+                ->addColumn('action', function ($member) {
+                    return view('datatable._action', [
+                        'model' => $member,
+                        'form_url' => route('members.destroy', $member->id),
+                        'edit_url' => route('members.edit', $member->id),
+                        'confirm_message' => 'Yakin mau menghapus ' . $member->name . '?',
+                    ]);
+                })->make(true);
+        }
+        $html = $htmlBuilder
+            ->addColumn(['data' => 'name', 'name' => 'name', 'title' => 'Nama'])
+            ->addColumn(['data' => 'email', 'name' => 'email', 'title' => 'Email'])
+            ->addColumn(['data' => 'action', 'name' => 'action', 'title' => '', 'orderable' => false, 'searchable' => false]);
+        return view('members.index', compact('html'));
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -66,22 +63,22 @@ return view('members.index', compact('html'));
         $password = str_random(6);
         $data = $request->all();
         $data['password'] = bcrypt($password);
-    // bypass verifikasi
+        // bypass verifikasi
         $data['is_verified'] = 1;
         $member = User::create($data);
-    // set role
+        // set role
         $memberRole = Role::where('name', 'member')->first();
         $member->attachRole($memberRole);
-    // kirim email
-       Mail::send('auth.emails.invite', compact('member', 'password'), function ($m) use ($member) {$m->to($member->email, $member->name)->subject('Anda telah didaftarkan di Larapus!');
-       });
-       Session::flash("flash_notification", [
-       "level" => "success",
-       "message" => "Berhasil menyimpan member dengan email " .
-       "<strong>" . $data['email'] . "</strong>" .
-       " dan password <strong>" . $password . "</strong>."
-       ]);
-       return redirect()->route('members.index');
+        // kirim email
+        Mail::send('auth.emails.invite', compact('member', 'password'), function ($m) use ($member) {$m->to($member->email, $member->name)->subject('Anda telah didaftarkan di Larapus!');
+        });
+        Session::flash("flash_notification", [
+            "level" => "success",
+            "message" => "Berhasil menyimpan member dengan email " .
+            "<strong>" . $data['email'] . "</strong>" .
+            " dan password <strong>" . $password . "</strong>.",
+        ]);
+        return redirect()->route('members.index');
     }
 
     /**
@@ -115,15 +112,15 @@ return view('members.index', compact('html'));
      * @return \Illuminate\Http\Response
      */
     public function update(UpdateMemberRequest $request, $id)
-{
-$member = User::find($id);
-$member->update($request->only('name','email'));
-Session::flash("flash_notification", [
-"level"=>"success",
-"message"=>"Berhasil menyimpan $member->name"
-]);
-return redirect()->route('members.index');
-}
+    {
+        $member = User::find($id);
+        $member->update($request->only('name', 'email'));
+        Session::flash("flash_notification", [
+            "level" => "success",
+            "message" => "Berhasil menyimpan $member->name",
+        ]);
+        return redirect()->route('members.index');
+    }
     /**
      * Remove the specified resource from storage.
      *
@@ -133,13 +130,13 @@ return redirect()->route('members.index');
     public function destroy($id)
     {
         $member = User::find($id);
-if ($member->hasRole('member')) {
-$member->delete();
-Session::flash("flash_notification", [
-"level"=>"success",
-"message"=>"Member berhasil dihapus"
-]);
-}
-return redirect()->route('members.index');
+        if ($member->hasRole('member')) {
+            $member->delete();
+            Session::flash("flash_notification", [
+                "level" => "success",
+                "message" => "Member berhasil dihapus",
+            ]);
+        }
+        return redirect()->route('members.index');
     }
 }
