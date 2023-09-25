@@ -44,21 +44,6 @@ class RegisterController extends Controller
         $this->middleware('user-should-verified');
     }
 
-    public function verify(Request $request, $token)
-    {
-        $email = $request->get('email');
-        $user = User::where('verification_token', $token)->where('email', $email)->first();
-        if ($user) {
-            $user->verify();
-            Session::flash("flash_notification", [
-                "level" => "success",
-                "message" => "Berhasil melakukan verifikasi.",
-            ]);
-            Auth::login($user);
-        }
-        return redirect('/');
-    }
-
     /**
      * Get a validator for an incoming registration request.
      *
@@ -71,7 +56,7 @@ class RegisterController extends Controller
             'name' => 'required|max:255',
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|min:6|confirmed',
-            'g-recaptcha-response' => ['required', 'captcha'],
+            'g-recaptcha-response' => 'required|captcha',
         ]);
     }
 
@@ -93,6 +78,22 @@ class RegisterController extends Controller
         $user->sendVerification();
         return $user;
     }
+
+    public function verify(Request $request, $token)
+    {
+        $email = $request->get('email');
+        $user = User::where('verification_token', $token)->where('email', $email)->first();
+        if ($user) {
+            $user->verify();
+            Session::flash("flash_notification", [
+                "level" => "success",
+                "message" => "Berhasil melakukan verifikasi.",
+            ]);
+            Auth::login($user);
+        }
+        return redirect('/');
+    }
+
     public function sendVerification(Request $request)
     {
         $user = User::where('email', $request->get('email'))->first();
