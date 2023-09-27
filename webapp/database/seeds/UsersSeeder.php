@@ -18,12 +18,12 @@ class UsersSeeder extends Seeder
         $adminRole->name = "admin";
         $adminRole->display_name = "Admin";
         $adminRole->save();
-// Membuat role member
+        // Membuat role member
         $memberRole = new Role();
         $memberRole->name = "member";
         $memberRole->display_name = "Member";
         $memberRole->save();
-// Membuat sample admin
+        // Membuat sample admin
         $admin = new User();
         $admin->name = 'Admin Larapus';
         $admin->email = 'admin@gmail.com';
@@ -31,7 +31,7 @@ class UsersSeeder extends Seeder
         $admin->is_verified = 1;
         $admin->save();
         $admin->attachRole($adminRole);
-// Membuat sample member
+        // Membuat sample member
         $member = new User();
         $member->name = "Sample Member";
         $member->email = 'member@gmail.com';

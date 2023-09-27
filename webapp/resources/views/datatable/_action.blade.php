@@ -1,4 +1,3 @@
-{{-- <a href="{{ $edit_url }}">Edit</a> --}}
 {!! Form::model($model, [
     'url' => $form_url,
     'method' => 'delete',
